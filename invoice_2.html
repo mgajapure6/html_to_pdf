@@ -181,20 +181,6 @@
 
 
             var documentDefinition = {
-                header: {
-                    columns: [
-                        {
-                            text: 'Tax Invoice',
-                            margin: [38, 5, 0, 0]
-                        },
-                        { text: '' },
-                        {
-                            text: 'Tax Invoice',
-                            margin: [0, 5, 38, 0],
-                            alignment: 'right',
-                        }
-                    ]
-                },
                 content: [
                     {
                         columns: [
@@ -217,7 +203,7 @@
                                         {
                                             columns: [
                                                 {
-                                                    text: 'Invoice No.',
+                                                    text: 'Receipt No.',
                                                     color: '#676767',
                                                     bold: true,
                                                     width: '*',
@@ -237,7 +223,7 @@
                                         {
                                             columns: [
                                                 {
-                                                    text: 'Invoice Date',
+                                                    text: 'Date Issued',
                                                     color: '#676767',
                                                     bold: true,
                                                     width: '*',
@@ -280,19 +266,6 @@
                         ],
                     },
                     {
-                        canvas: [
-                            {
-                                type: 'line',
-                                x1: 0,
-                                y1: 15,
-                                x2: 515,
-                                y2: 15,
-                                lineWidth: 0.2,
-                                color: '#dfdfdf',
-                            }
-                        ],
-                    },
-                    {
                         columns: [
                             {
                                 text: 'From',
@@ -315,13 +288,13 @@
                     {
                         columns: [
                             {
-                                text: invoice.vendor.name + '\n' + invoice.vendor.street_address + '\n' + invoice.vendor.city + '\n' + invoice.vendor.pincode + ', ' + invoice.vendor.state + '\n' + invoice.vendor.gstin,
+                                text: invoice.vendor.name + '\n' + invoice.vendor.street_address + '\n' + invoice.vendor.city + '\n' + invoice.vendor.pincode + '\n' + invoice.vendor.state + ', ' + invoice.vendor.gstin,
                                 bold: true,
                                 color: '#333333',
                                 alignment: 'left',
                             },
                             {
-                                text: invoice.customer.name + '\n' + invoice.customer.street_address + '\n' + invoice.customer.city + '\n' + invoice.customer.pincode + ', ' + invoice.customer.state + '\n' + invoice.customer.gstin,
+                                text: invoice.customer.name + '\n' + invoice.customer.street_address + '\n' + invoice.customer.city + '\n' + invoice.customer.pincode + '\n' + invoice.customer.state + ', ' + invoice.customer.gstin,
                                 bold: true,
                                 color: '#333333',
                                 alignment: 'right',
@@ -329,19 +302,13 @@
                         ],
                     },
                     {
-                        canvas: [
-                            {
-                                type: 'line',
-                                x1: 0,
-                                y1: 15,
-                                x2: 515,
-                                y2: 15,
-                                lineWidth: 0.2,
-                                color: '#dfdfdf',
-                            }
-                        ],
+                        width: '100%',
+                        alignment: 'center',
+                        text: 'Invoice No. ' + invoice.inv_number,
+                        bold: true,
+                        margin: [0, 10, 0, 10],
+                        fontSize: 15,
                     },
-
                     {
                         layout: {
                             defaultBorder: false,
@@ -388,7 +355,6 @@
                             body: itemsWholeTableData
                         },
                     },
-                    '\n',
                     {
                         layout: {
                             defaultBorder: false,
@@ -432,6 +398,21 @@
                             body: [
                                 [
                                     {
+                                        text: 'Material Amount',
+                                        border: [false, true, false, true],
+                                        alignment: 'right',
+                                        margin: [0, 2, 0, 2],
+                                    },
+                                    {
+                                        border: [false, true, false, true],
+                                        text: invoice.material_amt,
+                                        alignment: 'right',
+                                        fillColor: '#f5f5f5',
+                                        margin: [0, 2, 0, 2],
+                                    },
+                                ],
+                                [
+                                    {
                                         text: 'Taxable Amount',
                                         border: [false, true, false, true],
                                         alignment: 'right',
@@ -447,13 +428,28 @@
                                 ],
                                 [
                                     {
-                                        text: 'Tax Amount',
+                                        text: 'GST Tax Amount',
                                         border: [false, false, false, true],
                                         alignment: 'right',
                                         margin: [0, 2, 0, 2],
                                     },
                                     {
-                                        text: invoice.gst_amt + invoice.cess_amt,
+                                        text: invoice.gst_amt,
+                                        border: [false, false, false, true],
+                                        fillColor: '#f5f5f5',
+                                        alignment: 'right',
+                                        margin: [0, 2, 0, 2],
+                                    },
+                                ],
+                                [
+                                    {
+                                        text: 'Cess Amount',
+                                        border: [false, false, false, true],
+                                        alignment: 'right',
+                                        margin: [0, 2, 0, 2],
+                                    },
+                                    {
+                                        text: invoice.cess_amt,
                                         border: [false, false, false, true],
                                         fillColor: '#f5f5f5',
                                         alignment: 'right',
@@ -468,7 +464,22 @@
                                         margin: [0, 2, 0, 2],
                                     },
                                     {
-                                        text: invoice.invoice_discount,
+                                        text: invoice.discount,
+                                        border: [false, false, false, true],
+                                        fillColor: '#f5f5f5',
+                                        alignment: 'right',
+                                        margin: [0, 2, 0, 2],
+                                    },
+                                ],
+                                [
+                                    {
+                                        text: 'Roundup Amount',
+                                        border: [false, false, false, true],
+                                        alignment: 'right',
+                                        margin: [0, 2, 0, 2],
+                                    },
+                                    {
+                                        text: invoice.roundup_amt,
                                         border: [false, false, false, true],
                                         fillColor: '#f5f5f5',
                                         alignment: 'right',
@@ -499,39 +510,13 @@
                     },
                     '\n\n',
                     {
-                        columns: [
-                            {
-                                text: 'NOTES',
-                                fontSize: 10,
-                                bold: true,
-                                alignment: 'left',
-                                margin: [0, 10, 0, 5],
-                            },
-                            {
-                                text: '------------------------------',
-                                color: '#676767',
-                                bold: true,
-                                fontSize: 14,
-                                alignment: 'right',
-                                margin: [0, 10, 0, 5],
-                            },
-                        ],
-                    }, {
-                        columns: [
-                            {
-                                text: '1. Note 1 \n 2. Note 2',
-                                fontSize: 10,
-                                alignment: 'left',
-                            },
-                            {
-                                text: 'Authorised Signatory',
-                                color: '#676767',
-                                bold: true,
-                                fontSize: 12,
-                                alignment: 'right',
-                            },
-                        ]
-                    }
+                        text: 'NOTES',
+                        style: 'notesTitle',
+                    },
+                    {
+                        text: 'Some notes goes here \n Notes second line',
+                        style: 'notesText',
+                    },
                 ],
                 styles: {
                     notesTitle: {
